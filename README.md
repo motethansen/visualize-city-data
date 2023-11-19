@@ -22,7 +22,7 @@ Plan
 |ToDo|Doing|Done|
 |----|-----|----|
 | |Setup basic visual platform| Sample Dash app|
-|Import processed Traffy fondue data| | |
+|| Import processed Traffy fondue data| |
 |Display data in dynamic map|||
 |Add interactive options date, type, district|||
 |Build import module -scrape API|||
