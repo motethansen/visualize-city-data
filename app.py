@@ -1,7 +1,17 @@
 # app.py
-import dash
-from dash import dcc, html
+#import dash
+#from dash import dcc, html
+import streamlit as st
 import pandas as pd
+import folium
+from folium import plugins
+from streamlit_folium import folium_static
+
+
+
+# Coordinates for Bangkok city
+bangkok_coordinates = [13.7563, 100.5018]
+
 
 # Sample dataset
 data = [10, 20, 30, 40, 50]
@@ -9,29 +19,24 @@ data = [10, 20, 30, 40, 50]
 # Create a DataFrame for plotting
 df = pd.DataFrame(data, columns=["Values"])
 
-# Initialize the Dash app
-app = dash.Dash(__name__)
+def main():
+    st.title("Streamlit Example with Folium Map")
 
-# Define the layout of the app
-app.layout = html.Div([
-    html.H1("Dash Docker Example with Bar Chart"),
-    
+    # Map of Bangkok
+    folium_map = folium.Map(location=bangkok_coordinates, zoom_start=10)
+
+    # Display the Folium map in Streamlit
+    folium_static(folium_map)
+
+
     # Display the dataset
-    html.P("Dataset: {}".format(data)),
+    st.write("Dataset:", data)
 
-        # Bar chart
-    dcc.Graph(
-        id='bar-chart',
-        figure={
-            'data': [
-                {'x': df.index, 'y': df['Values'], 'type': 'bar', 'name': 'Values'}
-            ],
-            'layout': {
-                'title': 'Bar Chart'
-            }
-        }
-    )
-])
+    # Create a DataFrame for plotting
+    df = pd.DataFrame(data, columns=["Values"])
+
+    # Plotting
+    st.bar_chart(df)
 
 if __name__ == '__main__':
-    app.run_server(debug=True, host='0.0.0.0', port=8050)
+    main()
