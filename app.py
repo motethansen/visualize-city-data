@@ -3,40 +3,112 @@
 #from dash import dcc, html
 import streamlit as st
 import pandas as pd
+import numpy as np
 import folium
 from folium import plugins
+from folium.plugins import StripePattern
+import branca
 from streamlit_folium import folium_static
+import geopandas as gpd
 
 
 
 # Coordinates for Bangkok city
 bangkok_coordinates = [13.7563, 100.5018]
+filename = "traffy_geomapdata.csv"
+traffy_df = []
+district_boundary_data = []
 
 
-# Sample dataset
-data = [10, 20, 30, 40, 50]
+def load_data(nrows):
+    data = pd.read_csv(filename, nrows=nrows)
+    #data=data.drop(columns=['Complaint','Suggestion','Homeless','Journey','Inquiry','Bathroom','PM2.5','Traffic Signs'])
 
-# Create a DataFrame for plotting
-df = pd.DataFrame(data, columns=["Values"])
+    return data
+
+type = [
+"Bridge",
+"Canal",
+"Cleanliness",
+"Drain",
+"Electric Wires",
+"Flood",
+"Light",
+"Noise",
+"Obstruction",
+"Road",
+"Safety",
+"Sidewalk",
+"Signage",
+"Stray animals",
+"Traffic",
+"Tree"]
+
+
+
+def bkk_map(ctype, map_df):
+    # create a folium map centered on Bangkok
+    m = folium.Map(location=[13.7563, 100.5618],zoom_start=11)
+
+    # add the district boundary to the map as a PolyLine
+    #GeoJson(district_boundary_data).add_to(m)
+    colorscale = branca.colormap.step.RdYlBu_11.to_linear().scale(0, 1500)
+    colorscale.caption = '# of complaints'
+    # Set up Choropleth map
+    folium.Choropleth(
+    geo_data=map_df,
+    data=map_df,
+    columns=['district','Road'],
+    key_on="feature.properties.district",
+    fill_color='YlOrRd',
+    fill_opacity=0.7,
+    line_opacity=0.2,
+    legend_name="Road complaints",
+    smooth_factor=0,
+    Highlight= True,
+    #line_color = "#0000",
+    name = "Road complaints",
+    show=False,
+    overlay=True,
+    nan_fill_color = 'lightgrey', #"White"
+    nan_fill_opacity = 0.5
+    ).add_to(m)
+
+    # Not exactly a crosshatch, but its close.  Maybe you can find a better pattern
+    sp = StripePattern(angle=45, color='grey', space_color='white', fill_opacity=0.5, opacity=1)
+    sp.add_to(m)
+
+    # adding the nan layer with `sp` as the fillPattern
+    folium.GeoJson(data=district_boundary_data, style_function=lambda x :{'fillPattern': sp}).add_to(m)
+    return m
 
 def main():
     st.title("Streamlit Example with Folium Map")
+    district_boundary_data = gpd.read_file("bkk_districts.json")
 
+    # Create a text element and let the reader know the data is loading.
+    data_load_state = st.text('Loading data...')
+    # Load 10,000 rows of data into the dataframe.
+    data = load_data(50)
+    # Notify the reader that the data was successfully loaded.
+    data_load_state.text('Loading data...done!')
+    
+    #complaint_type = st.selectbox('Select complaint type: ',
+    #    type,
+    #    index=5)
+    
+
+    traffy_df = data
+    st.text(traffy_df.shape)
+    st.text(traffy_df.columns)
+
+    complaint_type="Road"
     # Map of Bangkok
-    folium_map = folium.Map(location=bangkok_coordinates, zoom_start=10)
+    folium_map = bkk_map(complaint_type, data)
 
     # Display the Folium map in Streamlit
     folium_static(folium_map)
-
-
-    # Display the dataset
-    st.write("Dataset:", data)
-
-    # Create a DataFrame for plotting
-    df = pd.DataFrame(data, columns=["Values"])
-
-    # Plotting
-    st.bar_chart(df)
+    
 
 if __name__ == '__main__':
     main()
