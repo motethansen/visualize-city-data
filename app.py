@@ -50,6 +50,7 @@ def bkk_map(ctype, map_df, bound):
     # create a folium map centered on Bangkok
     m = folium.Map(location=[13.7563, 100.5618],zoom_start=11)
 
+    comlaint_string = ctype +" "+"complaints"
     # add the district boundary to the map as a PolyLine
     #GeoJson(district_boundary_data).add_to(m)
     colorscale = branca.colormap.step.RdYlBu_11.to_linear().scale(0, 1500)
@@ -63,7 +64,7 @@ def bkk_map(ctype, map_df, bound):
     fill_color='YlOrRd',
     fill_opacity=0.7,
     line_opacity=0.2,
-    legend_name="Road complaints",
+    legend_name=comlaint_string, #"Road complaints",
     smooth_factor=0,
     Highlight= True,
     #line_color = "#0000",
@@ -83,15 +84,16 @@ def bkk_map(ctype, map_df, bound):
     return m
 
 def main():
-    st.title("Streamlit Example with Folium Map")
+    st.title("Traffy Fondue complaints data.")
+    st.subheader("District based visualization")
     district_boundary_data = gpd.read_file("bkk_districts.geojson")
 
     # Create a text element and let the reader know the data is loading.
-    data_load_state = st.text('Loading data...')
+    #data_load_state = st.text('Loading data...')
     # Load 10,000 rows of data into the dataframe.
     data = pd.read_pickle(filename)#load_data(50)
     # Notify the reader that the data was successfully loaded.
-    data_load_state.text('Loading data...done!')
+    #data_load_state.text('Loading data...done!')
     
     complaint_type = st.selectbox('Select complaint type: ',
         type,
@@ -99,10 +101,9 @@ def main():
     
 
     traffy_df = data
-    st.text(traffy_df.shape)
-    st.text(traffy_df.columns)
+    #st.text(traffy_df.shape)
+    #st.text(traffy_df.columns)
 
-    complaint_type="Road"
     # Map of Bangkok
     folium_map = bkk_map(complaint_type, traffy_df, district_boundary_data)
 
