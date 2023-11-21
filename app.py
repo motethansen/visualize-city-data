@@ -15,7 +15,7 @@ import geopandas as gpd
 
 # Coordinates for Bangkok city
 bangkok_coordinates = [13.7563, 100.5018]
-filename = "traffy_geomapdata.csv"
+filename = "map_df.pkl"
 traffy_df = []
 district_boundary_data = []
 
@@ -46,7 +46,7 @@ type = [
 
 
 
-def bkk_map(ctype, map_df):
+def bkk_map(ctype, map_df, bound):
     # create a folium map centered on Bangkok
     m = folium.Map(location=[13.7563, 100.5618],zoom_start=11)
 
@@ -58,7 +58,7 @@ def bkk_map(ctype, map_df):
     folium.Choropleth(
     geo_data=map_df,
     data=map_df,
-    columns=['district','Road'],
+    columns=['district', ctype], #'Road'],
     key_on="feature.properties.district",
     fill_color='YlOrRd',
     fill_opacity=0.7,
@@ -79,23 +79,23 @@ def bkk_map(ctype, map_df):
     sp.add_to(m)
 
     # adding the nan layer with `sp` as the fillPattern
-    folium.GeoJson(data=district_boundary_data, style_function=lambda x :{'fillPattern': sp}).add_to(m)
+    folium.GeoJson(data=bound, style_function=lambda x :{'fillPattern': sp}).add_to(m)
     return m
 
 def main():
     st.title("Streamlit Example with Folium Map")
-    district_boundary_data = gpd.read_file("bkk_districts.json")
+    district_boundary_data = gpd.read_file("bkk_districts.geojson")
 
     # Create a text element and let the reader know the data is loading.
     data_load_state = st.text('Loading data...')
     # Load 10,000 rows of data into the dataframe.
-    data = load_data(50)
+    data = pd.read_pickle(filename)#load_data(50)
     # Notify the reader that the data was successfully loaded.
     data_load_state.text('Loading data...done!')
     
-    #complaint_type = st.selectbox('Select complaint type: ',
-    #    type,
-    #    index=5)
+    complaint_type = st.selectbox('Select complaint type: ',
+        type,
+        index=5)
     
 
     traffy_df = data
@@ -104,7 +104,7 @@ def main():
 
     complaint_type="Road"
     # Map of Bangkok
-    folium_map = bkk_map(complaint_type, data)
+    folium_map = bkk_map(complaint_type, traffy_df, district_boundary_data)
 
     # Display the Folium map in Streamlit
     folium_static(folium_map)
