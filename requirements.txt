@@ -3,6 +3,7 @@ streamlit
 pandas
 numpy
 folium
+fiona
 geopandas
 branca
 streamlit-folium
