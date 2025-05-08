@@ -8,7 +8,7 @@ import folium
 from folium import plugins
 from folium.plugins import StripePattern
 import branca
-from streamlit_folium import folium_static
+from streamlit_folium import st_folium #folium_static
 import geopandas as gpd
 
 
@@ -108,7 +108,7 @@ def main():
     folium_map = bkk_map(complaint_type, traffy_df, district_boundary_data)
 
     # Display the Folium map in Streamlit
-    folium_static(folium_map)
+    st_folium(folium_map)
     
 
 if __name__ == '__main__':
