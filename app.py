@@ -85,8 +85,8 @@ def bkk_map(ctype, map_df, bound):
             'color': 'blue'
         },
         tooltip=GeoJsonTooltip(
-            fields=['dname_e'],
-            aliases=['District:'],
+            fields=['dname_e', ctype],
+            aliases=['District:', f'{ctype} Complaints:'],
             localize=True,
             sticky=True,
             labels=True,
