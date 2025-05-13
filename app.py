@@ -109,8 +109,8 @@ def bkk_map(ctype, map_df, bound):
     ).add_to(m)
 
     # Add stripe pattern for NaN values
-    sp = StripePattern(angle=45, color='grey', space_color='white', fill_opacity=0.5, opacity=1)
-    sp.add_to(m)
+  #  sp = StripePattern(angle=45, color='grey', space_color='white', fill_opacity=0.5, opacity=1)
+  #  sp.add_to(m)
     folium.features.GeoJson(
         data=bound,
         style_function=lambda x: {'fillPattern': sp},
