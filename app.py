@@ -9,6 +9,9 @@ from streamlit_folium import folium_static
 import geopandas as gpd
 from folium.features import GeoJsonTooltip
 
+#added stackbar
+import plotly.express as px
+
 # Coordinates for Bangkok city
 bangkok_coordinates = [13.7563, 100.5018]
 filename = "map_df.pkl"
@@ -124,6 +127,56 @@ def bkk_map(ctype, map_df, bound):
 
     return m
 
+def create_bar_chart(map_df):
+    # Pivot the data to get complaint counts by district and type
+    pivot_df = map_df.melt(
+        id_vars=['dname_e'],
+        value_vars=type,
+        var_name='Complaint Type',
+        value_name='Number of Complaints'
+    )
+    
+    # Aggregate to sum complaints per district and type (handling NaN as 0)
+    pivot_df = pivot_df.groupby(['dname_e', 'Complaint Type'])['Number of Complaints'].sum().reset_index()
+    
+    # Create a stacked bar chart with Plotly
+    fig = px.bar(
+        pivot_df,
+        x='Number of Complaints',
+        y='dname_e',
+        color='Complaint Type',
+        orientation='h',
+        title='Complaint types per district',
+        labels={'Number of Complaints': '# of complaints', 'district': 'District'},
+        height=800,
+        width=800,
+        color_discrete_map={
+            'Road': '#1f77b4', 'Safety': '#ff7f0e', 'Obstruction': '#2ca02c',
+            'Tree': '#d62728', 'Sidewalk': '#9467bd', 'Cleanliness': '#8c564b',
+            'Traffic': '#e377c2', 'Flood': '#7f7f7f', 'Drain': '#bcbd22',
+            'Light': '#17becf', 'Noise': '#1a55FF', 'Bridge': '#FF5555',
+            'Electric Wires': '#55FF55', 'Stray animals': '#FFAA00',
+            'Signage': '#00AAAA', 'Canal': '#AA00AA'
+        }
+    )
+    
+    # Update layout for better readability
+    fig.update_layout(
+        barmode='stack',
+        xaxis_title='# of complaints',
+        yaxis_title='District',
+        legend_title='Complaint Type',
+        hovermode='closest'
+    )
+    
+    # Customize hover template to show complaint type and number
+    fig.update_traces(
+        hovertemplate='<b>District:</b> %{y}<br><b>Complaint Type:</b> %{customdata}<br><b>Number of Complaints:</b> %{x}<extra></extra>',
+        customdata=pivot_df['Complaint Type']
+    )
+    
+    return fig
+
 def main():
     st.title("Traffy Fondue complaints data.")
     st.subheader("District based visualization")
@@ -146,6 +199,11 @@ def main():
     # Create and display map
     folium_map = bkk_map(complaint_type, traffy_df, district_boundary_data)
     folium_static(folium_map, width=725, height=500)
+
+    # Create and display bar chart below the map
+    st.subheader("Complaint Distribution by District")
+    bar_chart = create_bar_chart(traffy_df)
+    st.plotly_chart(bar_chart)
 
 if __name__ == '__main__':
     main()
