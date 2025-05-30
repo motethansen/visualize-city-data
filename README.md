@@ -5,6 +5,20 @@ This example will draw some illustrations of data visualization drawn from a Jup
 and then converted to an interactive web frontend.
 
 ---
+LOG
+
+Date May 30, 2025
+
+Did some modification and added a bargraph to the page.
+
+I also added dockerfile and docker compose
+
+use the command
+
+docker-compose up --build
+
+docker-compose down
+---
 
 LOG
 
