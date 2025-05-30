@@ -128,6 +128,9 @@ def bkk_map(ctype, map_df, bound):
     return m
 
 def create_bar_chart(map_df):
+
+    map_df['dname_e'] = map_df['dname_e'].str.strip()
+
     # Pivot the data to get complaint counts by district and type
     pivot_df = map_df.melt(
         id_vars=['dname_e'],
@@ -136,11 +139,23 @@ def create_bar_chart(map_df):
         value_name='Number of Complaints'
     )
     
+    ALL_DISTRICTS = [
+    'Bang Bon', 'Bang Kapi', 'Bang Khae', 'Bang Khen', 'Bang Kho laen', 'Bang Khun thain', 'Bang Na', 'Bang Phlat',
+    'Bang Rak', 'Bang Sue', 'Bangkok Noi', 'Bangkok Yai', 'Bueng Kum', 'Chatu Chak', 'Chom Thong', 'Din Daeng',
+    'Don Mueang', 'Dusit', 'Huai Khwang', 'Khan Na Yao', 'Khlong Sam Wa', 'Khlong San', 'Khlong Toei', 'Lak Si',
+    'Lat Krabang', 'Lat Phrao', 'Min Buri', 'Nong Chok', 'Nong Khaem', 'Parthum Wan', 'Phasi Charoen', 'Phaya Thai',
+    'Phra Khanong', 'Phra Nakhon', 'Pom Prap Sattru Phai', 'Pra Wet', 'Rat Burana', 'Ratchathewi', 'Sai Mai',
+    'Samphanthawong', 'Saphan Sung', 'Sathon', 'Suanluang', 'Taling Chan', 'Thawi Watthana', 'Thon buri', 'Thung khru',
+    'Vadhana', 'Wang Thong Lang', 'Yan na wa'
+]
+    ALL_DISTRICTS = sorted(ALL_DISTRICTS, reverse=True)
+
     # Aggregate to sum complaints per district and type (handling NaN as 0)
     pivot_df = pivot_df.groupby(['dname_e', 'Complaint Type'])['Number of Complaints'].sum().reset_index()
     
     # Ensure all district/type combinations are present
-    all_districts = map_df['dname_e'].unique()
+    #all_districts = map_df['dname_e'].unique()
+    all_districts = ALL_DISTRICTS
     
     all_types = type
     full_index = pd.MultiIndex.from_product([all_districts, all_types], names=['dname_e', 'Complaint Type'])
@@ -175,7 +190,12 @@ def create_bar_chart(map_df):
         legend_title='Complaint Type',
         hovermode='closest'
     )
-    
+ 
+    fig.update_yaxes(
+    tickmode='array',
+    tickvals=ALL_DISTRICTS,
+    ticktext=ALL_DISTRICTS
+)
     # Customize hover template to show complaint type and number
    
     fig.update_traces(
@@ -191,7 +211,7 @@ def create_bar_chart(map_df):
             '<b>Complaint Type:</b> %{customdata}<br>'
             '<b>Number of Complaints:</b> %{x}<extra></extra>'
     )
-    
+    #print(sorted(map_df['dname_e'].unique()))
     return fig
 
 def main():
