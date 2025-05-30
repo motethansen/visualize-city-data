@@ -170,9 +170,19 @@ def create_bar_chart(map_df):
     )
     
     # Customize hover template to show complaint type and number
+   
     fig.update_traces(
         hovertemplate='<b>District:</b> %{y}<br><b>Complaint Type:</b> %{customdata}<br><b>Number of Complaints:</b> %{x}<extra></extra>',
         customdata=pivot_df['Complaint Type']
+    )
+
+    for trace, complaint_type in zip(fig.data, pivot_df['Complaint Type'].unique()):
+        mask = pivot_df['Complaint Type'] == complaint_type
+        trace.customdata = pivot_df[mask]['Complaint Type']
+        trace.hovertemplate = (
+            '<b>District:</b> %{y}<br>'
+            '<b>Complaint Type:</b> %{customdata}<br>'
+            '<b>Number of Complaints:</b> %{x}<extra></extra>'
     )
     
     return fig
