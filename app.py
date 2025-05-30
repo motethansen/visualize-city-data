@@ -139,6 +139,13 @@ def create_bar_chart(map_df):
     # Aggregate to sum complaints per district and type (handling NaN as 0)
     pivot_df = pivot_df.groupby(['dname_e', 'Complaint Type'])['Number of Complaints'].sum().reset_index()
     
+    # Ensure all district/type combinations are present
+    all_districts = map_df['dname_e'].unique()
+    
+    all_types = type
+    full_index = pd.MultiIndex.from_product([all_districts, all_types], names=['dname_e', 'Complaint Type'])
+    pivot_df = pivot_df.set_index(['dname_e', 'Complaint Type']).reindex(full_index, fill_value=0).reset_index()
+    
     # Create a stacked bar chart with Plotly
     fig = px.bar(
         pivot_df,
