@@ -48,7 +48,7 @@ Plan
 |Build import module -scrape API|||
 |Build clean module|||
 |Update visual app with new data|||
-|Deploy to streamlit cloud|||
+|Deploy to streamlit cloud|Done||
 
 
 ---
