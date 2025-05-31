@@ -4,7 +4,8 @@
 This example will draw some illustrations of data visualization drawn from a Jupyter notebook analysis
 and then converted to an interactive web frontend.
 
-You can see the app here: [![Streamlit](https://badgen.net/badge/icon/GitHub?icon=streamlit&label)](https://visualize-city-data.streamlit.app/)
+You can see the app here: [![Streamlit](https://badgen.net/badge/Powered%20by/Streamlit/red)](https://visualize-city-data.streamlit.app/)
+
 
 </a>
 
