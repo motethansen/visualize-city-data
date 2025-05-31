@@ -42,13 +42,14 @@ Plan
 |ToDo|Doing|Done|
 |----|-----|----|
 | |Setup basic visual platform| Sample Dash app|
-|| Import processed Traffy fondue data| |
-|Display data in dynamic map|||
-|Add interactive options date, type, district|||
+|| | Import processed Traffy fondue data|
+|||Display data in dynamic map|
+|||Add interactive options:  district|
+|Add interactive options date, type||
 |Build import module -scrape API|||
 |Build clean module|||
 |Update visual app with new data|||
-|Deploy to streamlit cloud|Done||
+|||Deploy to streamlit cloud|
 
 
 ---
