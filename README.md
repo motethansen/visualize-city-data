@@ -1,8 +1,10 @@
 # Visualizing city data
 ### Traffy Fondue data from Bangkok
 
-This example will draw some illustrations of data visualization drawn from a Jupoyter notebook analysis
+This example will draw some illustrations of data visualization drawn from a Jupyter notebook analysis
 and then converted to an interactive web frontend.
+
+You can see the app here: [![Streamlit](https://your-image-url.com/streamlit-icon.png)](https://visualize-city-data.streamlit.app/)
 
 ---
 LOG
