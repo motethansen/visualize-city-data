@@ -7,9 +7,19 @@ and then converted to an interactive web frontend.
 You can see the app here: [![Streamlit](https://badgen.net/badge/Powered%20by/Streamlit/red)](https://visualize-city-data.streamlit.app/)
 
 
-</a>
-
-
+---
+Plan
+|ToDo|Doing|Done|
+|----|-----|----|
+| |Setup basic visual platform| Sample Dash app|
+|| | Import processed Traffy fondue data|
+|||Display data in dynamic map|
+|||Add interactive options:  district|
+|Add interactive options date, type||
+|Build import module -scrape API|||
+|Build clean module|||
+|Update visual app with new data|||
+|||Deploy to streamlit cloud|
 ---
 LOG
 
@@ -38,18 +48,7 @@ Keep up with the progress, here is the link to [streamlit cloud and community.](
 
 in order to test the initial visuals, the processed dataframe from the jupyter notebook with geo locations will be used to be passed in this example.
 
-Plan
-|ToDo|Doing|Done|
-|----|-----|----|
-| |Setup basic visual platform| Sample Dash app|
-|| | Import processed Traffy fondue data|
-|||Display data in dynamic map|
-|||Add interactive options:  district|
-|Add interactive options date, type||
-|Build import module -scrape API|||
-|Build clean module|||
-|Update visual app with new data|||
-|||Deploy to streamlit cloud|
+
 
 
 ---
