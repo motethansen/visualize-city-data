@@ -1,10 +1,12 @@
 # Visualizing city data
 ### Traffy Fondue data from Bangkok
 
+[![Streamlit](https://badgen.net/badge/Powered%20by/Streamlit/red)](https://visualize-city-data.streamlit.app/)
+
 This example will draw some illustrations of data visualization drawn from a Jupyter notebook analysis
 and then converted to an interactive web frontend.
 
-You can see the app here: [![Streamlit](https://badgen.net/badge/Powered%20by/Streamlit/red)](https://visualize-city-data.streamlit.app/) [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)]([URL_TO_YOUR_APP](https://visualize-city-data.streamlit.app/))
+You can see the app here:  [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)]([URL_TO_YOUR_APP](https://visualize-city-data.streamlit.app/))
 
 
 ---
